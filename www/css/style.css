@@ -1,0 +1,9 @@
+body {
+  padding-top: 50px;
+}
+body .main {
+  padding: 40px 15px;
+}
+body [role=form] {
+  margin: 10px;
+}
