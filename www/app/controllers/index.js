@@ -2,7 +2,7 @@ var Index=function(){
 
 }
 
-injector.process("BaseController",function(BaseController)
+injector.process("SBaseController",function(BaseController)
 {
 	Index.prototype=new BaseController();
 })

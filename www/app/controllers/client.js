@@ -2,7 +2,7 @@ var Client=function(){
 
 }
 
-injector.process("BaseController",function(BaseController)
+injector.process("SBaseController",function(BaseController)
 {
 	Client.prototype=new BaseController();
 })
@@ -11,7 +11,8 @@ Client.prototype.render=function(){
 	var that=this;
 	var $body=this.getBody();
 	$body.empty();
-	injector.process("widgetManager","eventManager",function(manager,eventManager){
+	injector.process("widgetManager","eventManager","formValidator","notifier",
+		function(manager,eventManager,validator,notifier){
 		manager.append($body,"buttonGroup",[{
 			code: "client",
 			text: "Client",
@@ -25,8 +26,8 @@ Client.prototype.render=function(){
 
 		eventManager.bind(document,"Load-Client-Form",function(){
 			$form.empty();
-			manager.append($form,"input",{code : "clientCode", label: "Client Code"});
-			manager.append($form,"input",{code : "clientName", label: "Client Name"});
+			manager.append($form,"input",{code : "clientCode", label: "Client Code",required : "required"});
+			manager.append($form,"input",{code : "clientName", label: "Client Name", required: "required"});
 			manager.append($form,"select",{
 				code: "type",
 				label: "Client type",
@@ -35,7 +36,19 @@ Client.prototype.render=function(){
 			});
 			manager.append($form,"input",{code : "address", label: "Address"});
 			manager.append($form,"text",{code : "comment", label: "Comment"});
-			manager.append($form,"button",{code : "submit",type: "submit"});
+			manager.append($form,"button",{code : "submit",type: "submit",onclick:function(){
+				var $form=$(this).parent("[role=form]");
+				validator.resetErrorClass($form);
+				var ret=validator.simpleValidate($form);
+				if(ret.success)
+				{
+					notifier.success("saved");
+				}else
+				{
+					notifier.error(ret.description);
+					$(ret.target).parent().addClass("has-error")
+				}
+			}});
 		});
 		eventManager.bind(document,"Load-Visit-Form",function(){
 			$form.empty();
@@ -44,7 +57,9 @@ Client.prototype.render=function(){
 			manager.append($form,"input",{code : "clientCode", label: "Client Code"});
 			manager.append($form,"input",{code : "location", label: "Address"});
 			manager.append($form,"text",{code : "comment", label: "Comment"});
-			manager.append($form,"button",{code : "submit",type: "submit"});
+			manager.append($form,"button",{code : "submit",type: "submit",onclick:function(){
+
+			}});
 		})
 	})
 }

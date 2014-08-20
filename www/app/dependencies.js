@@ -10,6 +10,7 @@
 	injector.register("titleController",require("./libs/title_controller").getInstance($("[data-role=title]")));
 	injector.register("dispatcher",require("./libs/dispatcher").getInstance());
 	injector.register("BaseController",require("./libs/base_controller").BaseController);
+	injector.register("SBaseController",require("./libs/secure_base_controller").SBaseController);
 	injector.register("templateManager",require("./libs/template_manager").getInstance({
 																						path: './template',
 																						postfix: 'html'
@@ -17,4 +18,8 @@
 	injector.register("hoganTemplates",require("./views/template").templates);
 	injector.register("widgetManager",require("./libs/widget_manager").getInstance());
 	injector.register("eventManager",require("./libs/event_manager").getInstance());
+	injector.register("formValidator",require("./libs/form_validator").getInstance());
+	injector.register("notifier",require("./libs/notifier").getInstance());
+	injector.register("FormGenerator",require("./libs/form_generator"));
+	injector.register("baseWidget",require("./libs/base_widget").getInstance());
 })()

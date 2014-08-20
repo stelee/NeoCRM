@@ -9,7 +9,8 @@ exports.appConfig=
 		["Clients","/clients"],
 		["Data","/data"],
 		["About","/about"]
-	]
+	],
+	login: "/login"
 }
 
 //configuration of the router
@@ -17,5 +18,6 @@ exports.routers={
 	"/" : "index",
 	"/clients" : "client",
 	"/data" : "data",
-	"/about" : "about"
+	"/about" : "about",
+	"/login" : "login"
 }
