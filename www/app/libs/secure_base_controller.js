@@ -9,18 +9,24 @@ injector.process("BaseController",function(BaseController)
 
 SBaseController.prototype.auth=function(resolve,reject)
 {
-	//TODO:Always reject
 	var that=this;
-	injector.process("appConfig","dispatcher",function(config,dispatcher){
-		reject();
-		var login=config.login;
-		if(!!login)
+	injector.process("appConfig","dispatcher","session",function(config,dispatcher,session){
+		if(!!!session.get("user"))
 		{
-			dispatcher.redirect(login);
+			reject();
+			var login=config.login;
+			if(!!login)
+			{
+				dispatcher.redirect(login);
+			}else
+			{
+				that.render_402();
+			}
 		}else
 		{
-			this.render_402();
+			resolve();
 		}
+		
 	})
 	
 }

@@ -16,10 +16,15 @@
 																						postfix: 'html'
 																					}));
 	injector.register("hoganTemplates",require("./views/template").templates);
+	injector.register("loadBar",require("./libs/progress_bar").getInstance());
 	injector.register("widgetManager",require("./libs/widget_manager").getInstance());
 	injector.register("eventManager",require("./libs/event_manager").getInstance());
 	injector.register("formValidator",require("./libs/form_validator").getInstance());
 	injector.register("notifier",require("./libs/notifier").getInstance());
 	injector.register("FormGenerator",require("./libs/form_generator"));
 	injector.register("baseWidget",require("./libs/base_widget").getInstance());
+	injector.register("BaseService",require("./services/base_service").BaseService);
+	injector.register("loginService",require("./services/login_service").getInstance());
+	injector.register("session",context.session);
+	injector.register("storage",context.storage);
 })()

@@ -1,6 +1,13 @@
 //This is the simple class to handle the URL
 var HASHBANG_REGEX=/^#!\//g;
 var HASHBANG_PREFIX='/#!';
+injector.process("appConfig",function(config)
+{
+	if(config.appPath)
+	{
+		HASHBANG_PREFIX = config.appPath + "#!";
+	}
+})
 
 var LocationService=function(){
 

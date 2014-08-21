@@ -1,7 +1,7 @@
 exports.render=function(attrs)
 {
 	var multiple="";
-	var required=attr.required || "";
+	var required=attrs.required || "";
 	if(!!attrs.multiple)
 	{
 		multiple="multiple";

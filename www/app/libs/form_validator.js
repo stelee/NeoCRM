@@ -10,7 +10,8 @@ FormValidator.prototype.simpleValidate=function($form)
 {
 	var formCtrlArr=$form.find("input,textarea,select")
 	var ret={
-		success: true
+		success: true,
+		data: {}
 	}
 	for(var i=0;i<formCtrlArr.length;i++)
 	{
@@ -34,6 +35,7 @@ FormValidator.prototype.simpleValidate=function($form)
 				return ret;
 			}
 		}
+		ret.data[$formCtrl.attr("id")] = $formCtrl.val();
 	}
 	return ret;
 }

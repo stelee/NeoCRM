@@ -1,5 +1,6 @@
 var Email=function(attr)
 {
+	this.attrs=attr;
 	var $comp=$("<div class='form-group'>");
 	var required=attr.required || "";
 	$comp.append("<label for='" + attr.code + "'> "+ attr.label + "</label>" );

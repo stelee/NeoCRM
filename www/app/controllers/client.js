@@ -11,8 +11,8 @@ Client.prototype.render=function(){
 	var that=this;
 	var $body=this.getBody();
 	$body.empty();
-	injector.process("widgetManager","eventManager","formValidator","notifier",
-		function(manager,eventManager,validator,notifier){
+	injector.process("widgetManager","eventManager","formValidator","notifier","FormGenerator",
+		function(manager,eventManager,validator,notifier,generator){
 		manager.append($body,"buttonGroup",[{
 			code: "client",
 			text: "Client",
@@ -22,44 +22,46 @@ Client.prototype.render=function(){
 			text: "Visit",
 			triggerEvent: "Load-Visit-Form"
 		}]);
-		$form=manager.append($body,"form");
+
+		$container=$("<div>");
+		$body.append($container);
 
 		eventManager.bind(document,"Load-Client-Form",function(){
-			$form.empty();
-			manager.append($form,"input",{code : "clientCode", label: "Client Code",required : "required"});
-			manager.append($form,"input",{code : "clientName", label: "Client Name", required: "required"});
-			manager.append($form,"select",{
-				code: "type",
-				label: "Client type",
-				options:[{value : "client", text : "Client"},
-				{value: "reseller", text: "Reseller"}]
-			});
-			manager.append($form,"input",{code : "address", label: "Address"});
-			manager.append($form,"text",{code : "comment", label: "Comment"});
-			manager.append($form,"button",{code : "submit",type: "submit",onclick:function(){
-				var $form=$(this).parent("[role=form]");
-				validator.resetErrorClass($form);
-				var ret=validator.simpleValidate($form);
-				if(ret.success)
-				{
-					notifier.success("saved");
-				}else
-				{
-					notifier.error(ret.description);
-					$(ret.target).parent().addClass("has-error")
+			$container.empty();
+			var formGen=generator.getInstance();
+			formGen.bind("success",function(data)
+			{
+				console.log(data);
+			})
+			formGen.generate(
+				{code : "clientCode", label: "Client Code",required : "required", type: "input"}
+				,{code : "clientName", label: "Client Name", required: "required",type: "input"}
+				,{
+					code: "type",
+					label: "Client type",
+					options:[
+						{value : "client", text : "Client"},
+						{value: "reseller", text: "Reseller"}
+					],type: "select"
 				}
-			}});
+				,{code : "address", label: "Address",type: "input"}
+				,{code : "comment", label: "Comment",type: "text"}
+			).appendTo($container);
 		});
 		eventManager.bind(document,"Load-Visit-Form",function(){
-			$form.empty();
-			manager.append($form,"datetime",{code : "visitDate", label: "Date",type: "date"});
-			manager.append($form,"datetime",{code : "visitDate", label: "Time",type: "time"});
-			manager.append($form,"input",{code : "clientCode", label: "Client Code"});
-			manager.append($form,"input",{code : "location", label: "Address"});
-			manager.append($form,"text",{code : "comment", label: "Comment"});
-			manager.append($form,"button",{code : "submit",type: "submit",onclick:function(){
-
-			}});
+			$container.empty();
+			var formGen=generator.getInstance();
+			formGen.bind("success",function(data)
+			{
+				console.log(data);
+			})
+			formGen.generate(
+				{code : "visitDate", label: "Date",subType: "date",type: "datetime"}
+				,{code : "visitDate", label: "Time",subType: "time",type:"datetime"}
+				,{code : "clientCode", label: "Client Code",type: "input"}
+				,{code : "location", label: "Address", type:"input"}
+				,{code : "comment", label: "Comment",type: "text"}
+			).appendTo($container);
 		})
 	})
 }

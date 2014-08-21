@@ -13,6 +13,17 @@ var Generator=function()
 	})
 }
 
+Generator.prototype.bind=function(identifier, fn)
+{
+	if(identifier === "success")
+	{
+		this.onSuccess=fn;
+	}else if(identifier === "failed")
+	{
+		this.onFailed=fn;
+	}
+}
+
 Generator.prototype.onSuccess=function(data)
 {
 	this.notifier.success("done");
@@ -47,7 +58,7 @@ Generator.prototype.generate=function()
 		var ret=validator.simpleValidate($form);
 		if(ret.success)
 		{
-			that.onSuccess();
+			that.onSuccess(ret.data);
 		}else
 		{
 			that.onFailed(ret);

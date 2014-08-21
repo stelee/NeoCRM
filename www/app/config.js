@@ -10,7 +10,8 @@ exports.appConfig=
 		["Data","/data"],
 		["About","/about"]
 	],
-	login: "/login"
+	login: "/login",
+	appPath: "/public/"
 }
 
 //configuration of the router

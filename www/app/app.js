@@ -3,6 +3,7 @@
 	script("../bower_components/jquery/dist/jquery");
 	script("../bower_components/bootstrap/dist/js/bootstrap");
 	require("./libs/pnotify.custom.min");
+	require("./libs/context")
 	PNotify.prototype.options.styling = "fontawesome";
 
 	global.Hogan=require('./libs/hogan-3.0.2');
