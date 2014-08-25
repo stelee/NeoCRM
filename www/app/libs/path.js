@@ -41,6 +41,66 @@ var setValue=function(target, path, value)
 	object[objName]=value;
 	return true;
 }
+var clone=function(source)
+{
+	var target={};
+
+	for(var prop in source)
+	{
+		if(!source.hasOwnProperty(prop))
+		{
+			continue;
+		}
+		if(typeof source[prop] === 'object')
+		{
+			target[prop]=clone(source[prop]);
+		}else
+		{
+			target[prop]=source[prop];
+		}
+	}
+	return target;
+}
+var walk=function(obj,decorator,propertyPath)
+{
+	if(typeof propertyPath === 'undefined')
+	{
+		propertyPath="";
+	}
+	for(var prop in obj)
+	{
+		var currentPropertyPath
+		if(propertyPath === "")
+		{
+			currentPropertyPath = prop;
+		}else
+		{
+			currentPropertyPath =  propertyPath + "." + prop;
+		}
+		
+		if(!obj.hasOwnProperty(prop))
+		{
+			continue;
+		}
+		if(typeof obj[prop] === "object")
+		{
+			walk(obj[prop],decorator,currentPropertyPath);
+		}else
+		{
+			obj[prop]=decorator(obj[prop],currentPropertyPath);
+		}
+	}
+}
+var immutableWalk=function(obj,decorator)
+{
+	var ret=clone(obj);
+	walk(ret,decorator);
+	return ret;
+}
+
+exports.walk=immutableWalk;
+exports.clone=clone;
+
 exports.path=function(target,path, value)
 {
 	if('undefined' == typeof value)

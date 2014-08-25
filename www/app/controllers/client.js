@@ -31,7 +31,29 @@ Client.prototype.render=function(){
 			var formGen=generator.getInstance();
 			formGen.bind("success",function(data)
 			{
-				console.log(data);
+				injector.process("Neo","session",function(Neo,session){
+					var neo=Neo.getInstance();
+					neo.createNode(data,'CLIENT').success(function(node){
+						notifier.info("The customer has been saved, you will be set as to know this customer");
+						neo.cypher('match (u:USER),(c:CLIENT)\
+							where u.email = {youremail} and c.clientCode={clientCode}\
+							optional match (c)-[r:BELONGS_TO]->(u)\
+							where r is null\
+							create (c)-[:BELONGS_TO]->(u)\
+							return u,c',{
+								youremail : session.get("user").username,
+								clientCode : node.data.clientCode
+							}).success(function(data){
+								notifier.info("The relationship between you and the client has been created");
+							}).failed(function(error){
+								notifier.error(error.responseText);
+							}
+						);
+
+					}).failed(function(error){
+						notifier.error(error);
+					}).save();
+				})
 			})
 			formGen.generate(
 				{code : "clientCode", label: "Client Code",required : "required", type: "input"}
@@ -45,6 +67,8 @@ Client.prototype.render=function(){
 					],type: "select"
 				}
 				,{code : "address", label: "Address",type: "input"}
+				,{code : "phone", label: "Phone",type: "tel"}
+				,{code : "email", label: "Email",type: "email"}
 				,{code : "comment", label: "Comment",type: "text"}
 			).appendTo($container);
 		});

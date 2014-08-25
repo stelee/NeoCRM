@@ -4,6 +4,7 @@
 	
 	//registration of the dependencies
 	injector.register("appConfig",config.appConfig);
+	injector.register("HttpClient",require('./libs/http_client').HttpClient);
 	injector.register("routerService",router);
 	injector.register("locationService",require("./libs/location_service").getInstance());
 	injector.register("menuController",require("./libs/menu_controller").getInstance($("[data-role=menu]")));
@@ -27,4 +28,15 @@
 	injector.register("loginService",require("./services/login_service").getInstance());
 	injector.register("session",context.session);
 	injector.register("storage",context.storage);
+
+	//traits
+	injector.register("TraitsObjectStatusSupport",require("./libs/traits_object_status_support").traits);
+
+	//Neo4j
+	injector.register("NeoNode",require("./libs/Neo/node").Node);
+	injector.register("NeoRelation",require("./libs/Neo/relation").Relation);
+	injector.register("Neo",require("./libs/Neo/neo_manager"));
+
+
+
 })()
