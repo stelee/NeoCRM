@@ -34,6 +34,19 @@ NeoManager.prototype.createNode=function(data,label)
 	return node;
 }
 
+NeoManager.prototype.exec=function(q)
+{
+	var that=this;
+	this._setStatusReady();
+	var httpClient=new HttpClient(this.options.connectionStr + "/db/data/cypher");
+	httpClient.post(q).then(function(data){
+		that._setStatusSuccess(data);
+	}).catch(function(error){
+		that._setstatusFailed(error);
+	})
+	return this;
+}
+
 NeoManager.prototype.cypher=function(query,params)
 {
 	var that=this;

@@ -36,7 +36,6 @@
 	injector.register("NeoNode",require("./libs/Neo/node").Node);
 	injector.register("NeoRelation",require("./libs/Neo/relation").Relation);
 	injector.register("Neo",require("./libs/Neo/neo_manager"));
-
-
-
+	injector.register("BaseModel",require("./libs/base_model").BaseModel);
+	injector.register("BaseLink",require("./libs/base_link").BaseLink);
 })()
