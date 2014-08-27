@@ -31,7 +31,7 @@ var buildWhereStr=function(wherestr)
 		{
 			ret += "n." + whereStrArr[i] + "=" + whereStrArr[i+1];
 		}
-		
+
 		i=i+2;
 	}
 	return ret;
@@ -73,6 +73,7 @@ BaseModel.prototype.save=function()
 		that._setStatusSuccess(that);
 	})
 	.failed(function(error){that._setstatusFailed(error)});
+	return this;
 }
 
 BaseModel.prototype.get=function(id)
@@ -96,7 +97,7 @@ BaseModel.prototype.get=function(id)
 				that.data=result[1].data;
 				that._setStatusSuccess(that);
 			}
-			
+
 		})
 		.failed(function(error){that._setstatusFailed(error)});
 	return this;
@@ -112,7 +113,7 @@ BaseModel.prototype.update=function(newData)
 	var q={};
 	q.query="MATCH(n:" + this.label + ") "+
 	"WHERE id(n)=" +  this.id  + " " +
-	"SET "+ buildSetStr(newData) + " " + 
+	"SET "+ buildSetStr(newData) + " " +
 	"RETURN id(n),n";
 	this.neo.exec(q)
 		.success(function(data){
@@ -154,8 +155,8 @@ BaseModel.prototype.findFirstBy=function(wherestr)
 	var that=this;
 	var q={};
 	q.query="MATCH(n:" + this.label + ") "+
-	"WHERE " + buildWhereStr(wherestr) + " LIMIT 1 " +
-	"RETURN id(n),n";
+	"WHERE " + buildWhereStr(wherestr) + " " +
+	"RETURN id(n),n LIMIT 1";
 	this.neo.exec(q)
 		.success(function(data){
 			if(data.data.length === 0)
@@ -213,7 +214,7 @@ BaseModel.prototype.updateBy=function(newData,wherestr)
 	var q={};
 	q.query="MATCH(n:" + this.label + ") "+
 	"WHERE " + buildWhereStr(wherestr) + " " +
-	"SET "+ buildSetStr(newData) + " " + 
+	"SET "+ buildSetStr(newData) + " " +
 	"RETURN id(n),n";
 	this.neo.exec(q)
 		.success(function(data){

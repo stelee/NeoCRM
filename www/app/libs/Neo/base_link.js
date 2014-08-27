@@ -35,7 +35,6 @@ BaseLink.prototype.link=function(from,to,initData)
 	}
 	this.neo.exec(q)
 		.success(function(data){
-			debugger;
 			if(data.data.length === 0)
 			{
 				that._setStatusSuccess(null);

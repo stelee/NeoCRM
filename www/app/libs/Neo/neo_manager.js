@@ -2,14 +2,10 @@
 var mergeOptions=require('./libs/option_helper').mergeOptionsWithDefault;
 
 var HttpClient;
-var Node;
-var Relation;
 
 //dependencies
-injector.process("HttpClient","NeoNode","NeoRelation",function(Client,NeoNode,NeoRelation){
+injector.process("HttpClient",function(Client,NeoNode,NeoRelation){
 	HttpClient=Client;
-	Node=NeoNode;
-	Relation=NeoRelation;
 })
 
 var NeoManager=function(attrs)
@@ -22,16 +18,8 @@ injector.process("TraitsObjectStatusSupport",function(traits){
 })
 
 NeoManager.prototype._options={
-	connectionStr : "http://localhost:7474"
-}
-
-NeoManager.prototype.createNode=function(data,label)
-{
-	var node=new Node();
-	node.services.create=this.options.connectionStr + "/db/data/node"
-	node.data=data;
-	node.label=label;
-	return node;
+	connectionStr : "http://localhost:7474",
+	modelPath: "./models/"
 }
 
 NeoManager.prototype.exec=function(q)
@@ -65,6 +53,19 @@ NeoManager.prototype.cypher=function(query,params)
 		that._setstatusFailed(error);
 	})
 	return this;
+}
+
+NeoManager.prototype.loadModel=function(name,data,id)
+{
+	try{
+		return require(this.options.modelPath + name).getInstance(data,id);
+	}catch(e){//if this model is not defined
+		var ret=null;
+		injector.process("BaseModel",function(Model){
+			ret=new Model(name.toUpperCase(),data,id);
+		})
+		return ret;
+	}
 }
 
 exports.getInstance=function(attrs){

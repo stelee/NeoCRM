@@ -2,7 +2,7 @@ var isNull=require("./libs/null").isNull;
 
 var Generator=function()
 {
-	//dependencies	
+	//dependencies
 	var that=this;
 	injector.process("widgetManager","eventManager","formValidator","notifier",
 	function(widgetManager,eventManager,formValidator,notifier){
@@ -15,16 +15,16 @@ var Generator=function()
 
 Generator.prototype.bind=function(identifier, fn)
 {
-	if(identifier === "success")
+	if(identifier === "verified")
 	{
-		this.onSuccess=fn;
+		this.onVerified=fn;
 	}else if(identifier === "failed")
 	{
 		this.onFailed=fn;
 	}
 }
 
-Generator.prototype.onSuccess=function(data)
+Generator.prototype.onVerified=function(data)
 {
 	this.notifier.success("done");
 }
@@ -58,7 +58,7 @@ Generator.prototype.generate=function()
 		var ret=validator.simpleValidate($form);
 		if(ret.success)
 		{
-			that.onSuccess(ret.data);
+			that.onVerified(ret.data);
 		}else
 		{
 			that.onFailed(ret);

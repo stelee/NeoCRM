@@ -13,20 +13,30 @@ LoginService.prototype.login=function(username, password)
 {
 	var that=this;
 	that.loadBar.show();
-	setTimeout(function(){
-		that.loadBar.hide();
-		if(username === "liy@leesoft.ca" && password === "passw0rd")
-		{
+	injector.process("Neo",function(Neo){
+		var manager=Neo.getInstance();
+		var user=manager.loadModel("user");
+		user
+		.findFirstBy("email='" + username + "' and password = '" + password + "'")
+		.success(function(user){
+			that.loadBar.hide();
+			if(user === null)
+			{
+					that._onfailed();
+					return;
+			}
 			that._onsuccess({
-				username : username,
-				displayName: "Yang Li",
-				group: "TEST-GROUP"
-			});
-		}else
+				username: user.data.email,
+				id : user.id,
+				displayName: user.data.displayName
+			})
+		})
+		.failed(function(error)
 		{
-			that._onfailed();
-		}
-	},1000)
+			that.loadBar.hide();
+			that._onfailed(error);
+		})
+	})
 	return this;
 }
 exports.getInstance=function()

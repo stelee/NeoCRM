@@ -29,30 +29,39 @@ Client.prototype.render=function(){
 		eventManager.bind(document,"Load-Client-Form",function(){
 			$container.empty();
 			var formGen=generator.getInstance();
-			formGen.bind("success",function(data)
+			formGen.bind("verified",function(data)
 			{
-				injector.process("Neo","session",function(Neo,session){
+				injector.process("Neo","session","BaseLink",function(Neo,session,BaseLink){
 					var neo=Neo.getInstance();
-					neo.createNode(data,'CLIENT').success(function(node){
-						notifier.info("The customer has been saved, you will be set as to know this customer");
-						neo.cypher('match (u:USER),(c:CLIENT)\
-							where u.email = {youremail} and c.clientCode={clientCode}\
-							optional match (c)-[r:BELONGS_TO]->(u)\
-							where r is null\
-							create (c)-[:BELONGS_TO]->(u)\
-							return u,c',{
-								youremail : session.get("user").username,
-								clientCode : node.data.clientCode
-							}).success(function(data){
-								notifier.info("The relationship between you and the client has been created");
-							}).failed(function(error){
-								notifier.error(error.responseText);
-							}
-						);
+					var client1 =neo.loadModel("client",data);
+					var client2 =neo.loadModel("client",data);
+					var user=neo.loadModel("user",{},session.get("user").id);
 
-					}).failed(function(error){
-						notifier.error(error);
-					}).save();
+					client1.findFirstBy("clientCode = '" + data.clientCode + "'").success(function(c){
+						if(c===null)
+						{
+							saveClient();
+						}else
+						{
+							notifier.error("The client with the same clientCode exists");
+						}
+					}).failed(function(){
+						notifier.error(error.responseText);
+					});
+
+					var saveClient=function()
+					{
+						client2.save().success(function(c){
+							notifier.info("The customer has been saved, you will be set as to know this customer");
+							var link=new BaseLink("CLIENT_OF");
+							link.link(c,user).success(function(){
+								notifier.info("The relationship between you and the client has been created");
+							});
+						})
+						.failed(function(error){
+							notifier.error(error.responseText);
+						})
+					}
 				})
 			})
 			formGen.generate(
@@ -75,7 +84,7 @@ Client.prototype.render=function(){
 		eventManager.bind(document,"Load-Visit-Form",function(){
 			$container.empty();
 			var formGen=generator.getInstance();
-			formGen.bind("success",function(data)
+			formGen.bind("verified",function(data)
 			{
 				console.log(data);
 			})

@@ -1,7 +1,7 @@
 (function(){
 	var config=require("./config");
 	var router=require("./libs/router").getInstance(config.routers);
-	
+
 	//registration of the dependencies
 	injector.register("appConfig",config.appConfig);
 	injector.register("HttpClient",require('./libs/http_client').HttpClient);
@@ -25,17 +25,18 @@
 	injector.register("FormGenerator",require("./libs/form_generator"));
 	injector.register("baseWidget",require("./libs/base_widget").getInstance());
 	injector.register("BaseService",require("./services/base_service").BaseService);
-	injector.register("loginService",require("./services/login_service").getInstance());
-	injector.register("session",context.session);
-	injector.register("storage",context.storage);
-
 	//traits
 	injector.register("TraitsObjectStatusSupport",require("./libs/traits_object_status_support").traits);
 
 	//Neo4j
-	injector.register("NeoNode",require("./libs/Neo/node").Node);
-	injector.register("NeoRelation",require("./libs/Neo/relation").Relation);
 	injector.register("Neo",require("./libs/Neo/neo_manager"));
-	injector.register("BaseModel",require("./libs/base_model").BaseModel);
-	injector.register("BaseLink",require("./libs/base_link").BaseLink);
+	injector.register("BaseModel",require("./libs/Neo/base_model").BaseModel);
+	injector.register("BaseLink",require("./libs/Neo/base_link").BaseLink);
+
+	injector.register("loginService",require("./services/login_service").getInstance());
+	injector.register("session",context.session);
+	injector.register("storage",context.storage);
+
+
+
 })()
