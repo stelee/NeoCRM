@@ -22,7 +22,7 @@ exports.traits={
 			this._onSuccess(data);
 		}
 	},
-	_setstatusFailed : function(error)
+	_setStatusFailed : function(error)
 	{
 		this._states_="failed";
 		this._error_=error;

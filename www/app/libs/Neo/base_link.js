@@ -48,7 +48,7 @@ BaseLink.prototype.link=function(from,to,initData)
 				that._setStatusSuccess(that);
 			}
 		})
-		.failed(function(error){that._setstatusFailed(error)});
+		.failed(function(error){that._setStatusFailed(error)});
 	return this;
 }
 

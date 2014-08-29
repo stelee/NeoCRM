@@ -30,7 +30,7 @@ NeoManager.prototype.exec=function(q)
 	httpClient.post(q).then(function(data){
 		that._setStatusSuccess(data);
 	}).catch(function(error){
-		that._setstatusFailed(error);
+		that._setStatusFailed(error);
 	})
 	return this;
 }
@@ -50,7 +50,7 @@ NeoManager.prototype.cypher=function(query,params)
 	httpClient.post(q).then(function(data){
 		that._setStatusSuccess(data);
 	}).catch(function(error){
-		that._setstatusFailed(error);
+		that._setStatusFailed(error);
 	})
 	return this;
 }

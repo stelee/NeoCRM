@@ -72,7 +72,7 @@ BaseModel.prototype.save=function()
 		that.data=result[1].data;
 		that._setStatusSuccess(that);
 	})
-	.failed(function(error){that._setstatusFailed(error)});
+	.failed(function(error){that._setStatusFailed(error)});
 	return this;
 }
 
@@ -99,14 +99,14 @@ BaseModel.prototype.get=function(id)
 			}
 
 		})
-		.failed(function(error){that._setstatusFailed(error)});
+		.failed(function(error){that._setStatusFailed(error)});
 	return this;
 }
 BaseModel.prototype.update=function(newData)
 {
 	if(this.id === null)
 	{
-		this._setstatusFailed("ID IS NOT SPECIFIED");
+		this._setStatusFailed("ID IS NOT SPECIFIED");
 		return this;
 	}
 	var that=this;
@@ -127,7 +127,7 @@ BaseModel.prototype.update=function(newData)
 				that.data=result[1].data;
 				that._setStatusSuccess(that);
 			}
-		}).failed(function(error){that._setstatusFailed(error)});
+		}).failed(function(error){that._setStatusFailed(error)});
 	return this;
 }
 BaseModel.prototype.drop=function()
@@ -136,7 +136,7 @@ BaseModel.prototype.drop=function()
 	var q={};
 	if(this.id === null)
 	{
-		this._setstatusFailed("ID IS NOT SPECIFIED");
+		this._setStatusFailed("ID IS NOT SPECIFIED");
 		return this;
 	}
 	q.query="MATCH (n:" + this.label + ") \
@@ -146,7 +146,7 @@ BaseModel.prototype.drop=function()
 	this.neo.exec(q).success(function(data)
 	{
 		that._setStatusSuccess(that);
-	}).failed(function(error){that._setstatusFailed(error)});
+	}).failed(function(error){that._setStatusFailed(error)});
 	return this;
 }
 
@@ -169,7 +169,7 @@ BaseModel.prototype.findFirstBy=function(wherestr)
 				that.data=result[1].data;
 				that._setStatusSuccess(that);
 			}
-		}).failed(function(error){that._setstatusFailed(error)})
+		}).failed(function(error){that._setStatusFailed(error)})
 	return this;
 }
 
@@ -200,7 +200,7 @@ BaseModel.prototype.findBy=function(wherestr,limit)
 				}
 				that._setStatusSuccess(models);
 			}
-		}).failed(function(error){that._setstatusFailed(error)})
+		}).failed(function(error){that._setStatusFailed(error)})
 	return this;
 }
 
@@ -241,7 +241,7 @@ BaseModel.prototype.updateBy=function(newData,wherestr)
 				}
 				that._setStatusSuccess(models);
 			}
-		}).failed(function(error){that._setstatusFailed(error)})
+		}).failed(function(error){that._setStatusFailed(error)})
 	return this;
 }
 
