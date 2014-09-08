@@ -25,8 +25,14 @@ FormBusiness.prototype.showAddVisitForm=function(formGen)
 {
   return formGen.generate(
     {code : "visitDate", label: "Date",subType: "date",type: "datetime"}
-    ,{code : "visitDate", label: "Time",subType: "time",type:"datetime"}
-    ,{code : "clientCode", label: "Client Code",type: "input", required: "required"}
+    ,{code : "visitTime", label: "Time",subType: "time",type:"datetime"}
+    ,{code : "clientCode", label: "Client Code",type: "input", required: "required",autocomplete:{
+      source: function(request,response)
+      {
+        debugger;//TODO;
+        response(["ibm","google","apple"]);
+      }
+    }}
     ,{code : "location", label: "Address", type:"input"}
     ,{code : "comment", label: "Comment",type: "text"}
   );

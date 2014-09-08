@@ -24,6 +24,7 @@
 	injector.register("notifier",require("./libs/notifier").getInstance());
 	injector.register("FormGenerator",require("./libs/form_generator"));
 	injector.register("baseWidget",require("./libs/base_widget").getInstance());
+	injector.register("BaseWidget",require("./libs/base_widget").BaseWidget);
 	injector.register("BaseService",require("./services/base_service").BaseService);
 	//traits
 	injector.register("TraitsObjectStatusSupport",require("./libs/traits_object_status_support").traits);

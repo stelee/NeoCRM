@@ -17,6 +17,8 @@ BaseWidget.prototype.setVal=function(value)
 	this.$comp.find("input,textarea,select").val(value);
 }
 
+exports.BaseWidget=BaseWidget;
+
 exports.getInstance=function()
 {
 	return new BaseWidget();

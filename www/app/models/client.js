@@ -3,15 +3,15 @@ injector.process("BaseModel",function(Model)
 {
   BaseModel=Model;
 })
-var User=function(data,id)
+var Client=function(data,id)
 {
   BaseModel.apply(this,["CLIENT",data,id]);
 }
 
-User.prototype=new BaseModel();
+Client.prototype=new BaseModel();
 
 
 exports.getInstance=function(data,id)
 {
-  return new User(data,id);
+  return new Client(data,id);
 }
