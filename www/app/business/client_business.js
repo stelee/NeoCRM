@@ -14,6 +14,7 @@ injector.process("TraitsObjectStatusSupport",function(traits){
   mixin(ClientBusiness,traits);
 })
 
+
 ClientBusiness.prototype.save=function(data)
 {
   var that=this;

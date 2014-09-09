@@ -23,14 +23,29 @@ FormBusiness.prototype.showAddClientForm=function(formGen)
 }
 FormBusiness.prototype.showAddVisitForm=function(formGen)
 {
+  var session;
+  injector.process("session",function(s){session=s});
   return formGen.generate(
     {code : "visitDate", label: "Date",subType: "date",type: "datetime"}
     ,{code : "visitTime", label: "Time",subType: "time",type:"datetime"}
     ,{code : "clientCode", label: "Client Code",type: "input", required: "required",autocomplete:{
       source: function(request,response)
       {
-        debugger;//TODO;
-        response(["ibm","google","apple"]);
+        var term=request.term;
+        var userId=session.get("user").id;
+        injector.process("Neo",function(Neo){
+          var neo=Neo.getInstance();
+          var client=neo.loadModel("client");
+          client.searchClientsByTermAndUserid(term,userId).success(function(clients){
+            var result=[];
+            clients.forEach(function(client){
+              result.push(client.data.clientCode);
+            })
+            response(result);
+          }).failed(function(error){
+            console.err(error);
+          })
+        })
       }
     }}
     ,{code : "location", label: "Address", type:"input"}
