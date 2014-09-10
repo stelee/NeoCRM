@@ -22,3 +22,7 @@ exports.routers={
 	"/about" : "about",
 	"/login" : "login"
 }
+
+exports.reportTypes={
+	
+}

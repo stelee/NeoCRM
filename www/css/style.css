@@ -104,3 +104,6 @@ body div.loading {
 body div.loading span {
   padding-left: 10px;
 }
+body .full-width {
+  width: 100%;
+}

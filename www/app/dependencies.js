@@ -42,6 +42,7 @@
 	injector.register("ClientBusiness",require("./business/client_business").ClientBusiness);
 	injector.register("FormBusiness",require("./business/form_business").FormBusiness);
 	injector.register("VisitBusiness",require("./business/visit_business").VisitBusiness);
+	injector.register("ReportTypeBusiness",require("./business/report_type_business").ReportTypeBusiness);
 
 
 
