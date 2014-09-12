@@ -23,6 +23,7 @@ exports.routers={
 	"/login" : "login"
 }
 
-exports.reportTypes={
-	
-}
+exports.reportItems=[
+{type: 'primary',id: 'clientReport',text: 'Client report'}
+,{type: 'info',id: 'clientVisitReport',text: 'Client visit report'}
+]

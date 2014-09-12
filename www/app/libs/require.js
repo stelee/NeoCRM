@@ -201,13 +201,32 @@
 			var toInjects=args
 							.slice(0,argumentsLength-1)
 							.map(function(injectName){
+								var autoGenerate=false;
+								if(injectName.indexOf("@")===0)
+								{
+									autoGenerate=true;
+									injectName=injectName.slice(1);
+									injectName=injectName.slice(0,1).toUpperCase()+injectName.slice(1)
+								}
 								var toInject=that.deps[injectName];
 								if(typeof toInject === 'undefined' 
 									|| toInject === null)
 								{
 									toInject=require(injectName);
 								}
-								return toInject;
+								if(autoGenerate)
+								{
+									try{
+										return new toInject();
+									}catch(e)
+									{
+										return null;
+										console.error("can't create the object, will you remove '@' from inject name?")
+									}
+								}else{
+									return toInject;
+								}
+								
 							})
 			var fn=args[argumentsLength-1];
 			var fnScope=scope;

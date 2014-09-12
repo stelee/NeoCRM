@@ -4,6 +4,7 @@
 
 	//registration of the dependencies
 	injector.register("appConfig",config.appConfig);
+	injector.register("reportItems",config.reportItems);
 	injector.register("HttpClient",require('./libs/http_client').HttpClient);
 	injector.register("routerService",router);
 	injector.register("locationService",require("./libs/location_service").getInstance());
@@ -42,8 +43,6 @@
 	injector.register("ClientBusiness",require("./business/client_business").ClientBusiness);
 	injector.register("FormBusiness",require("./business/form_business").FormBusiness);
 	injector.register("VisitBusiness",require("./business/visit_business").VisitBusiness);
-	injector.register("ReportTypeBusiness",require("./business/report_type_business").ReportTypeBusiness);
-
-
+	injector.register("ReportBusiness",require("./business/report_business").ReportBusiness);
 
 })()
